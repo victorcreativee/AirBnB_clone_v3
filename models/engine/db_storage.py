@@ -76,6 +76,7 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
+
         """Retrieve one object by class and id"""
         if cls and id:
             return self.__session.query(cls).filter_by(id=id).first()
@@ -92,3 +93,26 @@ class DBStorage:
             for cls in classes.values():
                 total += self.__session.query(cls).count()
             return total
+=======
+        """
+        Retrieves object of a class or all objects of that class
+        """
+        if id and isinstance(id, str):
+            if cls and (cls in classes.keys() or cls in classes.values()):
+                all_objs = self.all(cls)
+                for key, value in all_objs.items():
+                    if id == value.id and key.split('.')[1] == id:
+                        return value
+        return
+
+    def count(self, cls=None):
+        """
+        Returns the occurrence of a class or all classes
+        """
+        occurrence = 0
+        if cls:
+            if cls in classes.keys() or cls in classes.values():
+                occurrence = len(self.all(cls))
+        if not cls:
+            occurrence = len(self.all())
+        return occurrence
