@@ -93,7 +93,6 @@ class DBStorage:
             for cls in classes.values():
                 total += self.__session.query(cls).count()
             return total
-=======
         """
         Retrieves object of a class or all objects of that class
         """
